@@ -11,7 +11,9 @@ const year = new Date().getFullYear();
     <div class="flex gap-4 text-sm">
       <a href={SITE.social.github} class="text-[var(--ink-muted)] hover:text-[var(--brand)]">GitHub</a>
       <a href={`mailto:${SITE.email}`} class="text-[var(--ink-muted)] hover:text-[var(--brand)]">Email</a>
-      <a href={SITE.resumeUrl} class="text-[var(--ink-muted)] hover:text-[var(--brand)]">Resume</a>
+      {SITE.hasResume && (
+        <a href={SITE.resumeUrl} class="text-[var(--ink-muted)] hover:text-[var(--brand)]">Resume</a>
+      )}
     </div>
   </div>
 </footer>

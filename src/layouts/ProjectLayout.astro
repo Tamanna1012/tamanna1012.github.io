@@ -14,7 +14,7 @@ const { project, related } = Astro.props;
 const { data } = project;
 ---
 
-<BaseLayout title={data.title} description={data.summary}>
+<BaseLayout title={data.title} description={data.summary} image={data.coverImage.src}>
   <article>
     <div class="mx-auto max-w-6xl px-6 pt-12">
       <div class="mb-4 flex flex-wrap gap-1.5">

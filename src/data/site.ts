@@ -6,7 +6,10 @@ export const SITE = {
   email: "ttamanna1012@gmail.com", // TODO: confirm public contact email
   social: {
     github: "https://github.com/Tamanna1012",
-    linkedin: "", // TODO
+    linkedin: "", // TODO: add LinkedIn URL
   },
-  resumeUrl: "/resume.pdf", // TODO: add real resume file to /public
+  // Resume button is hidden site-wide until this is true -- flip it on once
+  // a real /public/resume.pdf is added, so the live site never ships a dead link.
+  hasResume: false,
+  resumeUrl: "/resume.pdf",
 };

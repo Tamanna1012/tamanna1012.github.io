@@ -30,7 +30,9 @@ const domainCounts = await deriveDomainCounts();
     </p>
     <div class="mt-8 flex flex-wrap gap-3">
       <Button href="/projects">View Projects</Button>
-      <Button href={SITE.resumeUrl} variant="secondary">Resume</Button>
+      {SITE.hasResume && (
+        <Button href={SITE.resumeUrl} variant="secondary">Resume</Button>
+      )}
     </div>
   </Section>
 

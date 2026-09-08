@@ -26,8 +26,10 @@ const identityLine = DOMAIN_LIST.map((d) => d.label).join(" + ");
         appears automatically as it's finished.
       </p>
     </div>
-    <div class="mt-8">
-      <Button href={SITE.resumeUrl}>Download Resume</Button>
-    </div>
+    {SITE.hasResume && (
+      <div class="mt-8">
+        <Button href={SITE.resumeUrl}>Download Resume</Button>
+      </div>
+    )}
   </Section>
 </BaseLayout>

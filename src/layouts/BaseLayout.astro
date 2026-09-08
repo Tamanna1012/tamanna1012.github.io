@@ -7,8 +7,13 @@ import "../styles/global.css";
 interface Props {
   title: string;
   description?: string;
+  image?: string;
 }
-const { title, description = SITE.description } = Astro.props;
+const { title, description = SITE.description, image } = Astro.props;
+
+const fullTitle = `${title} | ${SITE.name}`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const absoluteImage = image ? new URL(image, Astro.site).toString() : undefined;
 ---
 
 <!doctype html>
@@ -17,8 +22,21 @@ const { title, description = SITE.description } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title} | {SITE.name}</title>
+    <link rel="canonical" href={canonicalURL} />
+    <title>{fullTitle}</title>
     <meta name="description" content={description} />
+
+    <!-- Open Graph / social sharing -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    {absoluteImage && <meta property="og:image" content={absoluteImage} />}
+
+    <meta name="twitter:card" content={absoluteImage ? "summary_large_image" : "summary"} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    {absoluteImage && <meta name="twitter:image" content={absoluteImage} />}
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
