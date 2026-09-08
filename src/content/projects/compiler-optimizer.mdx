@@ -1,0 +1,106 @@
+---
+title: "Automated Evolutionary Search-Based Compiler Code Optimizer"
+summary: "A working compiler pipeline whose optimization pass ordering is discovered by a genetic algorithm instead of hard-coded by hand."
+domains: ["core-cs", "full-stack"]
+stack:
+  - "Python"
+  - "Flask"
+  - "JavaScript"
+  - "Genetic Algorithms"
+  - "Compiler Design"
+  - "pytest"
+role: "Solo builder — designed and implemented the entire compiler pipeline, all six optimization passes, and the genetic algorithm search engine."
+status: "completed"
+featured: true
+date:
+  started: 2026-09-07
+  completed: 2026-09-08
+links:
+  repo: "https://github.com/Tamanna1012/automated-evolutionary-compiler-optimizer-"
+  demo: "https://claude.ai/code/artifact/a8be19c2-155b-461c-97fe-294978d26007"
+coverImage: "./compiler-optimizer-cover.svg"
+metrics:
+  - label: "Instruction reduction"
+    value: "12 → 3"
+  - label: "Tests passing"
+    value: "29/29"
+  - label: "Optimization passes"
+    value: "6"
+  - label: "GA search space"
+    value: "30 × 40"
+highlights:
+  - "Built the full compiler front-end from scratch: lexer, recursive-descent parser, AST, and Three-Address Code generation."
+  - "The genetic algorithm genuinely outperforms a hand-picked fixed pass order — on the flagship example it finds a sequence that shrinks 12 instructions down to 3, versus 6 for the fixed order."
+  - "A correctness oracle actually executes every candidate optimization sequence and compares its output to the original program before scoring it — an unsafe sequence scores zero, no matter how small the code got."
+  - "Ported the entire pipeline to vanilla JavaScript for a zero-install, live-in-browser demo — no server required to try it."
+  - "29 automated tests covering every optimization pass individually, the parser, IR generation, and end-to-end semantic preservation."
+---
+
+## The problem
+
+Compilers apply optimization passes — Constant Folding, Dead Code
+Elimination, and the like — to make generated code smaller and faster. In
+practice, they're almost always run in one fixed, hand-picked order. But
+passes interact: running Constant Propagation *before* Constant Folding
+exposes more foldable expressions than running Folding alone. There is no
+single fixed order that's optimal for every program. This is a genuinely
+open problem in compiler research, known as the **phase-ordering problem**.
+
+## The approach
+
+Instead of committing to one fixed order, I treated phase ordering as a
+search problem. A chromosome is a sequence of six optimization-pass names;
+a population of 30 random sequences evolves over 40 generations using
+tournament selection, single-point crossover, mutation, and elitism —
+searching for the sequence that produces the smallest, cheapest code for
+the *specific* program being compiled.
+
+The safety-critical piece: before trusting any sequence's score, the
+optimized program is actually executed by a small interpreter and its
+output is compared against the original program's output. A sequence that
+changes what the program computes scores exactly zero, regardless of how
+much smaller the code got. This is what makes it safe for the search to
+explore aggressively.
+
+## Architecture
+
+```
+source code → Lexer → Parser → AST → IR Generator → Three-Address Code
+                                                            │
+                              ┌─────────────────────────────┴──────────────────────────────┐
+                              ▼                                                              ▼
+                  Traditional fixed-order optimizer                                Genetic Algorithm
+                  (one hand-picked pass sequence)                     (searches 6-gene pass-order chromosomes)
+                              │                                                              │
+                              └──────────────────────────────┬───────────────────────────────┘
+                                                               ▼
+                                                  Correctness-checked comparison
+```
+
+Every optimization pass — Constant Folding, Constant Propagation, Copy
+Propagation, Common Subexpression Elimination, Dead Code Elimination,
+Strength Reduction — is a small, independent, unit-tested function
+operating on the same Three-Address Code representation, which is what
+makes them freely composable and reorderable by the genetic algorithm.
+
+## Results
+
+On the flagship example, the traditional single-pass-each order gets from
+12 instructions down to 6. The genetic algorithm discovers that running
+Constant Propagation a **second time**, after folding, propagates
+now-constant values directly into the program's output statements — after
+which Dead Code Elimination removes everything else, collapsing the
+program to 3 instructions. That's a concrete, reproducible demonstration
+of the phase-ordering problem, and of evolutionary search solving it
+better than a fixed order.
+
+## What I'd extend next
+
+Full control-flow-graph-based liveness analysis (the current dataflow
+analysis is linear-scan), unreachable-code elimination, and support for
+functions and arrays — all deliberately scoped out to keep the project
+small enough to explain with full confidence rather than shallow across
+too much surface area.
+
+**Try it live** — the demo link above runs the entire pipeline, genetic
+algorithm included, directly in your browser.

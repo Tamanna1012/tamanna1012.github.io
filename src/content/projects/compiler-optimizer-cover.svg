@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#16171A"/>
+      <stop offset="100%" stop-color="#211F3B"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#4338CA"/>
+      <stop offset="100%" stop-color="#8B87F5"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- pipeline strand -->
+  <line x1="120" y1="360" x2="1080" y2="360" stroke="url(#line)" stroke-width="2" opacity="0.55"/>
+  <g font-family="JetBrains Mono, monospace" font-size="13" font-weight="600" fill="#C7C4FB">
+    <circle cx="180" cy="360" r="20" fill="#211F3B" stroke="#8B87F5" stroke-width="2"/>
+    <text x="180" y="365" text-anchor="middle">CF</text>
+
+    <circle cx="340" cy="360" r="20" fill="#211F3B" stroke="#8B87F5" stroke-width="2"/>
+    <text x="340" y="365" text-anchor="middle">CP</text>
+
+    <circle cx="500" cy="360" r="20" fill="#211F3B" stroke="#8B87F5" stroke-width="2"/>
+    <text x="500" y="365" text-anchor="middle">CSE</text>
+
+    <circle cx="660" cy="360" r="20" fill="#211F3B" stroke="#8B87F5" stroke-width="2"/>
+    <text x="660" y="365" text-anchor="middle">DCE</text>
+
+    <circle cx="820" cy="360" r="20" fill="#211F3B" stroke="#8B87F5" stroke-width="2"/>
+    <text x="820" y="365" text-anchor="middle">SR</text>
+
+    <circle cx="980" cy="360" r="24" fill="#4338CA" stroke="#8B87F5" stroke-width="2"/>
+    <text x="980" y="366" text-anchor="middle" fill="#FFFFFF" font-size="14">GA</text>
+  </g>
+
+  <text x="120" y="200" font-family="Fraunces, Georgia, serif" font-size="46" font-weight="600" fill="#F3F2EF">
+    Evolutionary
+  </text>
+  <text x="120" y="255" font-family="Fraunces, Georgia, serif" font-size="46" font-weight="600" fill="#F3F2EF">
+    Compiler Optimizer
+  </text>
+  <text x="120" y="290" font-family="Public Sans, sans-serif" font-size="16" fill="#9A9BA3">
+    A genetic algorithm that discovers better optimization-pass orderings than a fixed sequence
+  </text>
+
+  <g font-family="JetBrains Mono, monospace" font-size="13" fill="#6B6D75">
+    <text x="120" y="470">12 &#8594; 3 instructions</text>
+    <text x="340" y="470">29/29 tests passing</text>
+    <text x="560" y="470">6 optimization passes</text>
+    <text x="800" y="470">30 &#215; 40 GA search</text>
+  </g>
+</svg>
