@@ -9,28 +9,125 @@ const nav = [
 const path = Astro.url.pathname;
 ---
 
+<a
+  href="#main-content"
+  class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-[var(--brand)] focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+>
+  Skip to content
+</a>
+
 <header class="sticky top-0 z-40 border-b border-[var(--line)] bg-[var(--bg)]/85 backdrop-blur">
   <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
     <a href="/" class="font-display text-lg font-semibold text-[var(--ink)]">
       Tamanna<span class="text-[var(--brand)]">.</span>
     </a>
-    <nav class="flex items-center gap-1">
-      {nav.map((item) => {
-        const active = path === item.href || (item.href !== "/" && path.startsWith(item.href));
-        return (
-          <a
-            href={item.href}
-            class:list={[
-              "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
-              active
-                ? "text-[var(--brand)]"
-                : "text-[var(--ink-muted)] hover:text-[var(--ink)]",
-            ]}
-          >
-            {item.label}
-          </a>
-        );
-      })}
-    </nav>
+
+    <div class="flex items-center gap-4">
+      <nav aria-label="Primary" class="flex items-center gap-1">
+        {nav.map((item) => {
+          const active = path === item.href || (item.href !== "/" && path.startsWith(item.href));
+          return (
+            <a
+              href={item.href}
+              aria-current={active ? "page" : undefined}
+              class:list={[
+                "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
+                active
+                  ? "text-[var(--brand)]"
+                  : "text-[var(--ink-muted)] hover:text-[var(--ink)]",
+              ]}
+            >
+              {item.label}
+            </a>
+          );
+        })}
+      </nav>
+
+      <div
+        class="flex items-center gap-0.5 rounded-full border border-[var(--line)] bg-[var(--surface)] p-0.5"
+        id="theme-toggle"
+        role="group"
+        aria-label="Theme"
+      >
+        <button
+          type="button"
+          data-theme-choice="light"
+          class="theme-btn"
+          aria-label="Light theme"
+          title="Light"
+        >
+          &#9728;
+        </button>
+        <button
+          type="button"
+          data-theme-choice="system"
+          class="theme-btn"
+          aria-label="Match system theme"
+          title="System"
+        >
+          &#9680;
+        </button>
+        <button
+          type="button"
+          data-theme-choice="dark"
+          class="theme-btn"
+          aria-label="Dark theme"
+          title="Dark"
+        >
+          &#9790;
+        </button>
+      </div>
+    </div>
   </div>
 </header>
+
+<style>
+  .theme-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 999px;
+    border: none;
+    background: transparent;
+    color: var(--ink-muted);
+    font-size: 0.8rem;
+    cursor: pointer;
+  }
+  .theme-btn.active {
+    background: var(--brand-soft);
+    color: var(--brand-ink);
+  }
+  .theme-btn:focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 1px;
+  }
+</style>
+
+<script>
+  const root = document.documentElement;
+  const buttons = document.querySelectorAll<HTMLButtonElement>("#theme-toggle [data-theme-choice]");
+  let saved = "system";
+  try {
+    saved = localStorage.getItem("theme") || "system";
+  } catch {
+    // localStorage unavailable (private browsing, etc.) -- fall back to system.
+  }
+
+  function apply(choice: string) {
+    if (choice === "light") root.setAttribute("data-theme", "light");
+    else if (choice === "dark") root.setAttribute("data-theme", "dark");
+    else root.removeAttribute("data-theme");
+
+    buttons.forEach((b) => b.classList.toggle("active", b.dataset.themeChoice === choice));
+    try {
+      localStorage.setItem("theme", choice);
+    } catch {
+      // ignore
+    }
+  }
+
+  buttons.forEach((b) => b.addEventListener("click", () => apply(b.dataset.themeChoice!)));
+  apply(saved);
+</script>
