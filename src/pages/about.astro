@@ -2,10 +2,16 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Section from "../components/ui/Section.astro";
 import Button from "../components/ui/Button.astro";
+import Timeline from "../components/about/Timeline.astro";
+import Credentials from "../components/about/Credentials.astro";
 import { DOMAIN_LIST } from "../data/domains";
 import { SITE } from "../data/site";
+import { getAllExperience } from "../lib/getExperience";
+import { getAllCertifications } from "../lib/getCertifications";
 
 const identityLine = DOMAIN_LIST.map((d) => d.label).join(" + ");
+const experience = await getAllExperience();
+const certifications = await getAllCertifications();
 ---
 
 <BaseLayout title="About">
@@ -31,5 +37,15 @@ const identityLine = DOMAIN_LIST.map((d) => d.label).join(" + ");
         <Button href={SITE.resumeUrl}>Download Resume</Button>
       </div>
     )}
+  </Section>
+
+  <Section class="pt-0">
+    <h2 class="mb-6 font-display text-2xl font-semibold text-[var(--ink)]">Experience</h2>
+    <Timeline entries={experience} />
+  </Section>
+
+  <Section class="pt-0">
+    <h2 class="mb-6 font-display text-2xl font-semibold text-[var(--ink)]">Certifications</h2>
+    <Credentials entries={certifications} />
   </Section>
 </BaseLayout>
