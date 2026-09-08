@@ -1,0 +1,33 @@
+---
+interface Props {
+  label: string;
+  color?: string; // hex, for domain badges
+  variant?: "domain" | "tech";
+  href?: string;
+}
+const { label, color, variant = "tech", href } = Astro.props;
+const Tag = href ? "a" : "span";
+---
+
+{
+  variant === "domain" ? (
+    <Tag
+      href={href}
+      class="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold font-mono-label"
+      style={{
+        color: color,
+        background: `color-mix(in srgb, ${color} 12%, transparent)`,
+        border: `1px solid color-mix(in srgb, ${color} 40%, transparent)`,
+      }}
+    >
+      {label}
+    </Tag>
+  ) : (
+    <Tag
+      href={href}
+      class="inline-flex items-center rounded-md bg-[var(--surface-2)] border border-[var(--line)] px-2 py-0.5 text-xs font-mono-label text-[var(--ink-muted)]"
+    >
+      {label}
+    </Tag>
+  )
+}

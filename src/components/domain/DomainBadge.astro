@@ -1,0 +1,18 @@
+---
+import Badge from "../ui/Badge.astro";
+import { DOMAINS, type DomainId } from "../../data/domains";
+
+interface Props {
+  domain: DomainId;
+  linked?: boolean;
+}
+const { domain, linked = true } = Astro.props;
+const meta = DOMAINS[domain];
+---
+
+<Badge
+  label={meta.short}
+  color={meta.color}
+  variant="domain"
+  href={linked ? `/domains/${meta.id}` : undefined}
+/>

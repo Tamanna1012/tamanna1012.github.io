@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "../components/ui/Section.astro";
+import SkillDistribution from "../components/charts/SkillDistribution.astro";
+import { deriveSkills } from "../lib/deriveSkills";
+
+const skills = await deriveSkills();
+---
+
+<BaseLayout
+  title="Skills"
+  description="Technologies used across every project, computed automatically."
+>
+  <Section class="pt-12">
+    <h1 class="mb-2 font-display text-3xl font-semibold text-[var(--ink)]">Skills</h1>
+    <p class="mb-8 max-w-2xl text-[var(--ink-muted)]">
+      Not a claimed list -- this is computed directly from the tech stack of
+      every project on this site. It updates automatically as new work is
+      added.
+    </p>
+    <div class="max-w-2xl">
+      <SkillDistribution skills={skills} />
+    </div>
+  </Section>
+</BaseLayout>

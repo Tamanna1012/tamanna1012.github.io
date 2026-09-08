@@ -1,0 +1,57 @@
+---
+import Badge from "../ui/Badge.astro";
+import type { ProjectEntry } from "../../lib/getProjects";
+
+interface Props {
+  data: ProjectEntry["data"];
+}
+const { data } = Astro.props;
+
+const linkLabels: Record<string, string> = {
+  repo: "Source",
+  demo: "Live Demo",
+  docs: "Docs",
+  video: "Video",
+  paper: "Paper",
+};
+
+const dateFmt = (d: Date) => d.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+const dateRange = data.date.completed
+  ? `${dateFmt(data.date.started)} - ${dateFmt(data.date.completed)}`
+  : `${dateFmt(data.date.started)} - Present`;
+---
+
+<div class="space-y-5 rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface-2)] p-6">
+  <div>
+    <p class="font-mono-label text-xs uppercase text-[var(--ink-muted)]">Role</p>
+    <p class="text-sm text-[var(--ink)]">{data.role}</p>
+  </div>
+  <div>
+    <p class="font-mono-label text-xs uppercase text-[var(--ink-muted)]">Timeline</p>
+    <p class="text-sm text-[var(--ink)]">{dateRange}</p>
+  </div>
+  <div>
+    <p class="font-mono-label text-xs uppercase text-[var(--ink-muted)]">Status</p>
+    <p class="text-sm capitalize text-[var(--ink)]">{data.status.replace("-", " ")}</p>
+  </div>
+  <div>
+    <p class="mb-2 font-mono-label text-xs uppercase text-[var(--ink-muted)]">Stack</p>
+    <div class="flex flex-wrap gap-1.5">
+      {data.stack.map((tech) => <Badge label={tech} variant="tech" />)}
+    </div>
+  </div>
+  {Object.entries(data.links).some(([, v]) => v) && (
+    <div>
+      <p class="mb-2 font-mono-label text-xs uppercase text-[var(--ink-muted)]">Links</p>
+      <div class="flex flex-col gap-1.5">
+        {Object.entries(data.links).map(([key, url]) =>
+          url ? (
+            <a href={url} class="text-sm font-medium text-[var(--brand)] hover:underline">
+              {linkLabels[key] ?? key} &rarr;
+            </a>
+          ) : null
+        )}
+      </div>
+    </div>
+  )}
+</div>

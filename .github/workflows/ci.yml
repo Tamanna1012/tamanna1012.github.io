@@ -1,0 +1,22 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # This is the content-schema safety net: astro build validates every
+      # file in src/content/ against the Zod schemas in content/config.ts.
+      # A malformed project fails CI before it ever reaches production.
+      - run: npm run build

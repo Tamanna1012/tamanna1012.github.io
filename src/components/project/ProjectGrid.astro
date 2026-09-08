@@ -1,0 +1,30 @@
+---
+import ProjectCard from "./ProjectCard.astro";
+import type { ProjectEntry } from "../../lib/getProjects";
+
+interface Props {
+  projects: ProjectEntry[];
+  emptyMessage?: string;
+}
+const { projects, emptyMessage = "First projects landing here soon." } = Astro.props;
+---
+
+{
+  projects.length === 0 ? (
+    <div class="rounded-[var(--radius)] border border-dashed border-[var(--line)] bg-[var(--surface-2)] p-12 text-center">
+      <p class="font-mono-label text-sm text-[var(--ink-muted)]">{emptyMessage}</p>
+    </div>
+  ) : (
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" data-project-grid>
+      {projects.map((project) => (
+        <div
+          data-project-item
+          data-domains={project.data.domains.join(",")}
+          data-stack={project.data.stack.join(",")}
+        >
+          <ProjectCard project={project} />
+        </div>
+      ))}
+    </div>
+  )
+}

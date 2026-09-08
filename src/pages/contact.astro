@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "../components/ui/Section.astro";
+import Button from "../components/ui/Button.astro";
+import { SITE } from "../data/site";
+---
+
+<BaseLayout title="Contact">
+  <Section class="pt-12">
+    <h1 class="mb-4 font-display text-3xl font-semibold text-[var(--ink)]">Contact</h1>
+    <p class="mb-8 max-w-xl text-[var(--ink-muted)]">
+      The best way to reach me is email -- I check it regularly.
+    </p>
+    <div class="flex flex-wrap gap-3">
+      <Button href={`mailto:${SITE.email}`}>Email Me</Button>
+      <Button href={SITE.social.github} variant="secondary">GitHub</Button>
+    </div>
+  </Section>
+</BaseLayout>

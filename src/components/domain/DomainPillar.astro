@@ -1,0 +1,28 @@
+---
+import type { DomainMeta } from "../../data/domains";
+
+interface Props {
+  domain: DomainMeta;
+  count: number;
+}
+const { domain, count } = Astro.props;
+---
+
+<a
+  href={`/domains/${domain.id}`}
+  class="group flex flex-col justify-between rounded-[var(--radius)] border border-[var(--line)] bg-[var(--surface)] p-5 shadow-[var(--shadow)] transition-transform hover:-translate-y-0.5"
+>
+  <div>
+    <span
+      class="mb-3 inline-block h-2 w-2 rounded-full"
+      style={{ background: domain.color }}
+    ></span>
+    <h3 class="font-display text-base font-semibold text-[var(--ink)] group-hover:text-[var(--brand)]">
+      {domain.label}
+    </h3>
+    <p class="mt-1 text-sm text-[var(--ink-muted)]">{domain.description}</p>
+  </div>
+  <p class="mt-4 font-mono-label text-xs text-[var(--ink-muted)]">
+    {count} {count === 1 ? "project" : "projects"}
+  </p>
+</a>

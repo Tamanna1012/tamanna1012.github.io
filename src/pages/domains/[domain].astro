@@ -1,0 +1,29 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Section from "../../components/ui/Section.astro";
+import ProjectGrid from "../../components/project/ProjectGrid.astro";
+import { DOMAIN_IDS, DOMAINS } from "../../data/domains";
+import { getProjectsByDomain } from "../../lib/getProjects";
+
+export async function getStaticPaths() {
+  return DOMAIN_IDS.map((id) => ({ params: { domain: id } }));
+}
+
+const { domain } = Astro.params;
+const meta = DOMAINS[domain as keyof typeof DOMAINS];
+const projects = await getProjectsByDomain(meta.id);
+---
+
+<BaseLayout title={meta.label} description={meta.description}>
+  <Section class="pt-12">
+    <p class="font-mono-label text-xs uppercase tracking-wider" style={`color: ${meta.color}`}>
+      Domain
+    </p>
+    <h1 class="mt-2 mb-2 font-display text-3xl font-semibold text-[var(--ink)]">{meta.label}</h1>
+    <p class="mb-8 max-w-2xl text-[var(--ink-muted)]">{meta.description}</p>
+    <ProjectGrid
+      projects={projects}
+      emptyMessage={`No ${meta.label} projects yet -- this page fills in automatically once one is added.`}
+    />
+  </Section>
+</BaseLayout>

@@ -1,0 +1,20 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Section from "../../components/ui/Section.astro";
+import ProjectGrid from "../../components/project/ProjectGrid.astro";
+import ProjectFilterBar from "../../components/project/ProjectFilterBar.astro";
+import { getAllProjects } from "../../lib/getProjects";
+
+const projects = await getAllProjects();
+---
+
+<BaseLayout title="Projects" description="All projects across every domain.">
+  <Section class="pt-12">
+    <h1 class="mb-2 font-display text-3xl font-semibold text-[var(--ink)]">Projects</h1>
+    <p class="mb-8 max-w-2xl text-[var(--ink-muted)]">
+      Filter by domain to explore a specific area, or browse everything below.
+    </p>
+    <ProjectFilterBar />
+    <ProjectGrid projects={projects} />
+  </Section>
+</BaseLayout>

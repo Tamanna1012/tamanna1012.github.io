@@ -1,0 +1,69 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "../components/ui/Section.astro";
+import Button from "../components/ui/Button.astro";
+import DomainPillar from "../components/domain/DomainPillar.astro";
+import ProjectGrid from "../components/project/ProjectGrid.astro";
+import { DOMAIN_LIST } from "../data/domains";
+import { SITE } from "../data/site";
+import { getAllProjects, getFeaturedProjects } from "../lib/getProjects";
+import { deriveDomainCounts } from "../lib/deriveSkills";
+
+const allProjects = await getAllProjects();
+const featured = await getFeaturedProjects(3);
+const recent = allProjects.slice(0, 6);
+const domainCounts = await deriveDomainCounts();
+---
+
+<BaseLayout title="Home">
+  <Section class="pt-16 md:pt-24 pb-12">
+    <p class="font-mono-label text-xs uppercase tracking-wider text-[var(--brand)]">
+      B.Tech CSE &middot; Building across the stack
+    </p>
+    <h1 class="mt-3 max-w-3xl font-display text-4xl font-semibold leading-tight text-[var(--ink)] md:text-5xl">
+      {SITE.tagline}
+    </h1>
+    <p class="mt-5 max-w-2xl text-lg text-[var(--ink-muted)]">
+      A core Computer Science foundation, extended across full stack
+      development, data science &amp; analytics, machine learning, generative
+      AI, and supporting depth in cloud, DevOps, security, and blockchain.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <Button href="/projects">View Projects</Button>
+      <Button href={SITE.resumeUrl} variant="secondary">Resume</Button>
+    </div>
+  </Section>
+
+  <Section>
+    <h2 class="mb-2 font-display text-2xl font-semibold text-[var(--ink)]">Domains</h2>
+    <p class="mb-8 max-w-2xl text-[var(--ink-muted)]">
+      Every project fits into one or more of these. This list is fixed --
+      new work slots in here automatically.
+    </p>
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {DOMAIN_LIST.map((d) => (
+        <DomainPillar domain={d} count={domainCounts.get(d.id) ?? 0} />
+      ))}
+    </div>
+  </Section>
+
+  {featured.length > 0 && (
+    <Section>
+      <h2 class="mb-8 font-display text-2xl font-semibold text-[var(--ink)]">Featured</h2>
+      <ProjectGrid projects={featured} />
+    </Section>
+  )}
+
+  <Section>
+    <div class="mb-8 flex items-center justify-between">
+      <h2 class="font-display text-2xl font-semibold text-[var(--ink)]">Recent Work</h2>
+      <a href="/projects" class="text-sm font-medium text-[var(--brand)] hover:underline">
+        View all &rarr;
+      </a>
+    </div>
+    <ProjectGrid
+      projects={recent}
+      emptyMessage="No projects yet -- the first one lands here soon, with zero changes needed to this page."
+    />
+  </Section>
+</BaseLayout>

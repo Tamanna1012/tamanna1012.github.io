@@ -1,0 +1,33 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Section from "../components/ui/Section.astro";
+import Button from "../components/ui/Button.astro";
+import { DOMAIN_LIST } from "../data/domains";
+import { SITE } from "../data/site";
+
+const identityLine = DOMAIN_LIST.map((d) => d.label).join(" + ");
+---
+
+<BaseLayout title="About">
+  <Section class="pt-12">
+    <h1 class="mb-6 font-display text-3xl font-semibold text-[var(--ink)]">About</h1>
+    <div class="max-w-2xl space-y-4 text-[var(--ink-muted)]">
+      <p>
+        I'm a B.Tech Computer Science (Core) student. My foundation is in
+        core CS -- algorithms, data structures, compilers, systems -- and
+        I've built outward from there into full stack development, data
+        science and analytics, machine learning, generative AI, with
+        supporting depth in cloud, DevOps, cybersecurity, and blockchain.
+      </p>
+      <p class="font-mono-label text-sm text-[var(--ink)]">{identityLine}</p>
+      <p>
+        This site is intentionally built to grow without ever needing a
+        redesign -- every project is data, not a bespoke page, so new work
+        appears automatically as it's finished.
+      </p>
+    </div>
+    <div class="mt-8">
+      <Button href={SITE.resumeUrl}>Download Resume</Button>
+    </div>
+  </Section>
+</BaseLayout>

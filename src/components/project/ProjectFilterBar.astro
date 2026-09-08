@@ -1,0 +1,68 @@
+---
+import { DOMAIN_LIST } from "../../data/domains";
+---
+
+<div class="mb-8 flex flex-wrap gap-2" data-filter-bar>
+  <button
+    type="button"
+    data-filter-chip
+    data-domain="all"
+    class="chip chip-active"
+  >
+    All
+  </button>
+  {DOMAIN_LIST.map((d) => (
+    <button
+      type="button"
+      data-filter-chip
+      data-domain={d.id}
+      class="chip"
+      style={`--chip-color: ${d.color}`}
+    >
+      {d.short}
+    </button>
+  ))}
+</div>
+
+<style>
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--ink-muted);
+    background: var(--surface);
+    transition: all 0.15s ease;
+  }
+  .chip:hover {
+    border-color: var(--chip-color, var(--brand));
+    color: var(--ink);
+  }
+  .chip-active {
+    background: color-mix(in srgb, var(--chip-color, var(--brand)) 14%, transparent);
+    border-color: var(--chip-color, var(--brand));
+    color: var(--ink);
+  }
+</style>
+
+<script>
+  // Plain vanilla JS -- no framework needed for this small piece of interactivity.
+  const chips = document.querySelectorAll<HTMLButtonElement>("[data-filter-chip]");
+  const items = document.querySelectorAll<HTMLElement>("[data-project-item]");
+
+  chips.forEach((chip) => {
+    chip.addEventListener("click", () => {
+      chips.forEach((c) => c.classList.remove("chip-active"));
+      chip.classList.add("chip-active");
+
+      const domain = chip.dataset.domain;
+      items.forEach((item) => {
+        const domains = item.dataset.domains?.split(",") ?? [];
+        const visible = domain === "all" || domains.includes(domain!);
+        item.style.display = visible ? "" : "none";
+      });
+    });
+  });
+</script>

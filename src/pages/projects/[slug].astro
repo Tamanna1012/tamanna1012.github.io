@@ -1,0 +1,22 @@
+---
+import { render } from "astro:content";
+import ProjectLayout from "../../layouts/ProjectLayout.astro";
+import { getAllProjects } from "../../lib/getProjects";
+import { deriveRelated } from "../../lib/deriveRelated";
+
+export async function getStaticPaths() {
+  const projects = await getAllProjects();
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project, allProjects: projects },
+  }));
+}
+
+const { project, allProjects } = Astro.props;
+const { Content } = await render(project);
+const related = deriveRelated(project, allProjects);
+---
+
+<ProjectLayout project={project} related={related}>
+  <Content />
+</ProjectLayout>

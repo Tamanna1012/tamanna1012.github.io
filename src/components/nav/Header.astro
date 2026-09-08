@@ -1,0 +1,36 @@
+---
+const nav = [
+  { href: "/", label: "Home" },
+  { href: "/projects", label: "Projects" },
+  { href: "/skills", label: "Skills" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
+];
+const path = Astro.url.pathname;
+---
+
+<header class="sticky top-0 z-40 border-b border-[var(--line)] bg-[var(--bg)]/85 backdrop-blur">
+  <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+    <a href="/" class="font-display text-lg font-semibold text-[var(--ink)]">
+      Tamanna<span class="text-[var(--brand)]">.</span>
+    </a>
+    <nav class="flex items-center gap-1">
+      {nav.map((item) => {
+        const active = path === item.href || (item.href !== "/" && path.startsWith(item.href));
+        return (
+          <a
+            href={item.href}
+            class:list={[
+              "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
+              active
+                ? "text-[var(--brand)]"
+                : "text-[var(--ink-muted)] hover:text-[var(--ink)]",
+            ]}
+          >
+            {item.label}
+          </a>
+        );
+      })}
+    </nav>
+  </div>
+</header>

@@ -1,0 +1,36 @@
+---
+import type { SkillCount } from "../../lib/deriveSkills";
+
+interface Props {
+  skills: SkillCount[];
+}
+const { skills } = Astro.props;
+const max = Math.max(1, ...skills.map((s) => s.count));
+---
+
+{
+  skills.length === 0 ? (
+    <p class="font-mono-label text-sm text-[var(--ink-muted)]">
+      Skills will populate automatically as projects are added.
+    </p>
+  ) : (
+    <div class="space-y-2.5">
+      {skills.map((s) => (
+        <div class="flex items-center gap-3">
+          <span class="w-32 shrink-0 truncate font-mono-label text-xs text-[var(--ink-muted)]">
+            {s.name}
+          </span>
+          <div class="h-2 flex-1 overflow-hidden rounded-full bg-[var(--surface-2)]">
+            <div
+              class="h-full rounded-full bg-[var(--brand)]"
+              style={`width: ${(s.count / max) * 100}%`}
+            />
+          </div>
+          <span class="w-6 shrink-0 text-right font-mono-label text-xs text-[var(--ink-muted)]">
+            {s.count}
+          </span>
+        </div>
+      ))}
+    </div>
+  )
+}
